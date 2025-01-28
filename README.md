@@ -6,5 +6,5 @@
  you can use make command in ternimal or run this command
 
 ```
- gcc -g -Wall -Wextra -o GradeSoftware main.c grade.c
+ gcc -g -o GradeSoftware main.c grade.c
 ```
