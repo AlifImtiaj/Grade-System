@@ -91,9 +91,7 @@ void SearchStudentInfo(int roll) {
         if (fgets(line, sizeof(line), fp) != NULL)
             printf("%s", line);
     }
-
     fclose(fp);
-    
 }
 
 void ClearInputBuffer() {
