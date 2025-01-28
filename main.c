@@ -2,13 +2,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
+
+#ifdef _WIN32
+    #include <direct.h>
+    #include <io.h>
+#else
+    #include <sys/stat.h>
+    #include <unistd.h>
+#endif
 
 void CreateDir();
 
 int main() {
     CreateDir();
-
+    
 
     int totalNumberOfStudent;
     printf("Total students : ");
@@ -18,7 +25,7 @@ int main() {
 
 
     for(int i = 0; i < totalNumberOfStudent; i++) {
-        fflush(stdin); // clears the input buffer
+        ClearInputBuffer(); // clears the input buffer
         TakeInformation(&students[i]);
         // SaveStudentInfo(&students[i]);
     }
@@ -55,14 +62,18 @@ int main() {
 }
 
 void CreateDir() {
-    struct stat st = {0}; // Struct to hold file status
-
-    // Check if the "data" folder exists
-    if (stat("data", &st) == -1) {
-        // If it doesn't exist, create the folder
-        if (mkdir("data") == 0);
-        else {
-            perror("Error creating folder");
+    #ifdef _WIN32
+        if (_access("data", 0) != 0) {
+            if (_mkdir("data") != 0) {
+                perror("Error creating folder");
+            }
         }
-    }
+    #else
+        struct stat st = {0};
+        if (stat("data", &st) == -1) {
+            if (mkdir("data", 0755) != 0) {
+                perror("Error creating folder");
+            }
+        }
+    #endif
 }

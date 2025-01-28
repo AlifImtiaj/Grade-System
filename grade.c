@@ -11,7 +11,7 @@ void ShowInformation(struct Student* std) {
 void TakeInformation(struct Student* std) {
 
     printf("\nEnter name : ");
-    scanf("%[^\n]", std->name); // take input until new line (Enter) is pressed
+    scanf("%256[^\n]", std->name); // take input until new line (Enter) is pressed
 
     printf("\nEnter roll : ");
     scanf("%d", &std->roll);
@@ -55,9 +55,9 @@ void SaveStudentInfo(struct Student *std, int totalCourses)
     fprintf(fp, "Name : %s\t\t\tRoll : %d\n", std->name, std->roll);
 
     for (int i = 0; i < totalCourses; i++) {
-        fflush(stdin);
+        ClearInputBuffer();
         printf("Course name : ");
-        scanf("%[^\n]",courses[i].name);
+        scanf("%80[^\n]",courses[i].name);
         printf("Number : ");
         scanf("%f",&courses[i].number);
     }
@@ -84,7 +84,6 @@ void SearchStudentInfo(int roll) {
     FILE* fp = fopen(filePath, "r");
     if (fp == NULL) {
         printf("Student information does not exists!!!\n");
-        fclose(fp);
         return;
     }
 
@@ -95,4 +94,9 @@ void SearchStudentInfo(int roll) {
 
     fclose(fp);
     
+}
+
+void ClearInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }

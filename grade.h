@@ -16,3 +16,4 @@ void ShowInformation(struct Student* std);
 void TakeInformation(struct Student* std);
 void SaveStudentInfo(struct Student* std, int totalCourses);
 void SearchStudentInfo(int roll);
+void ClearInputBuffer();
