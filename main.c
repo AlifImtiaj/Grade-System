@@ -60,7 +60,7 @@ void CreateDir() {
     // Check if the "data" folder exists
     if (stat("data", &st) == -1) {
         // If it doesn't exist, create the folder
-        if (_mkdir("data") == 0);
+        if (mkdir("data") == 0);
         else {
             perror("Error creating folder");
         }
