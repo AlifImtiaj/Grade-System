@@ -2,25 +2,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
+void CreateDir();
 
 int main() {
-
-    // int totalNumberOfStudent;
-    // printf("Total students : ");
-    // scanf("%d",&totalNumberOfStudent);
-
-    // struct Student* students = (struct Student*)malloc(sizeof(struct Student)*totalNumberOfStudent);
+    CreateDir();
 
 
-    // for(int i = 0; i < totalNumberOfStudent; i++) {
-    //     fflush(stdin); // clears the input buffer
-    //     TakeInformation(&students[i]);
-    //     // SaveStudentInfo(&students[i]);
-    // }
+    int totalNumberOfStudent;
+    printf("Total students : ");
+    scanf("%d",&totalNumberOfStudent);
+
+    struct Student* students = (struct Student*)malloc(sizeof(struct Student)*totalNumberOfStudent);
 
 
-    // free(students);
+    for(int i = 0; i < totalNumberOfStudent; i++) {
+        fflush(stdin); // clears the input buffer
+        TakeInformation(&students[i]);
+        // SaveStudentInfo(&students[i]);
+    }
+
+
+    free(students);
 
 
 
@@ -48,4 +52,17 @@ int main() {
 
     return 0;
 
+}
+
+void CreateDir() {
+    struct stat st = {0}; // Struct to hold file status
+
+    // Check if the "data" folder exists
+    if (stat("data", &st) == -1) {
+        // If it doesn't exist, create the folder
+        if (_mkdir("data") == 0);
+        else {
+            perror("Error creating folder");
+        }
+    }
 }
