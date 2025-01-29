@@ -8,12 +8,15 @@ struct Student {
 struct Course {
     char name[80];
     float number;
-    char gpa[3];
+    float courseCredit;
+    float gp;
+    char gl[3]; // grade letter
 };
 
 void ShowInformation(struct Student* std);
-
 void TakeInformation(struct Student* std);
 void SaveStudentInfo(struct Student* std, int totalCourses);
 void SearchStudentInfo(int roll);
+
+void CalculateGPA(struct Course* crs);
 void ClearInputBuffer();

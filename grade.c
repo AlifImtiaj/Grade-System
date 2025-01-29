@@ -8,6 +8,48 @@ void ShowInformation(struct Student* std) {
     printf("\nRoll : %d", std->roll);
 }
 
+void CalculateGPA(struct Course* crs) {
+    float marks = crs->number;
+    while (marks > 100 || marks < 0) {
+        printf("\nOut of range, please input between 0 to 100\nNumber : ");
+        scanf("%f",&marks);
+    }
+    crs->number = marks;
+
+    if (marks > 0 && marks < 40) {
+        strcpy(crs->gl, "F");
+        crs->gp = 0;
+    } else if (marks >= 40 && marks < 45) {
+        strcpy(crs->gl, "D");
+        crs->gp = 2.0;
+    } else if (marks >= 45 && marks < 50) {
+        strcpy(crs->gl, "C");
+        crs->gp  = 2.25;
+    } else if (marks >= 50 && marks < 55) {
+        strcpy(crs->gl, "C+");
+        crs->gp = 2.5;
+    } else if (marks >= 55 && marks < 60) {
+        strcpy(crs->gl, "B-");
+        crs->gp = 2.75;
+    } else if (marks >= 60 && marks < 65) {
+        strcpy(crs->gl, "B");
+        crs->gp = 3.0;
+    } else if (marks >= 65 && marks < 70) {
+        strcpy(crs->gl, "B+");
+        crs->gp = 3.25;
+    } else if (marks >= 70 && marks < 75) {
+        strcpy(crs->gl, "A-");
+        crs->gp = 3.5;
+    } else if (marks >= 75 && marks < 80) {
+        strcpy(crs->gl, "A");
+        crs->gp = 3.75;
+    } else {
+        strcpy(crs->gl, "A+");
+        crs->gp = 4.0;
+    }
+
+}
+
 void TakeInformation(struct Student* std) {
 
     printf("\nEnter name : ");
