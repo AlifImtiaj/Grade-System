@@ -18,5 +18,5 @@ void TakeInformation(struct Student* std);
 void SaveStudentInfo(struct Student* std, int totalCourses);
 void SearchStudentInfo(int roll);
 
-void CalculateGPA(struct Course* crs);
+float CalculateGPA(struct Course* crs);
 void ClearInputBuffer();

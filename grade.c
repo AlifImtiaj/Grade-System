@@ -8,7 +8,7 @@ void ShowInformation(struct Student* std) {
     printf("\nRoll : %d", std->roll);
 }
 
-void CalculateGPA(struct Course* crs) {
+float CalculateGPA(struct Course* crs) {
     float marks = crs->number;
     while (marks > 100 || marks < 0) {
         printf("\nOut of range, please input between 0 to 100\nNumber : ");
@@ -16,7 +16,7 @@ void CalculateGPA(struct Course* crs) {
     }
     crs->number = marks;
 
-    if (marks > 0 && marks < 40) {
+    if (marks >= 0 && marks < 40) {
         strcpy(crs->gl, "F");
         crs->gp = 0;
     } else if (marks >= 40 && marks < 45) {
@@ -47,6 +47,7 @@ void CalculateGPA(struct Course* crs) {
         strcpy(crs->gl, "A+");
         crs->gp = 4.0;
     }
+    return crs->gp;
 
 }
 
@@ -99,6 +100,29 @@ void SaveStudentInfo(struct Student *std, int totalCourses)
         return;
     }
 
+    for (int i = 0; i < totalCourses; i++) {
+        ClearInputBuffer();
+
+        printf("Course name : ");
+        scanf("%80[^\n]",courses[i].name);
+
+        printf("Number : ");
+        scanf("%f",&courses[i].number);
+        gpa[i] = CalculateGPA(&courses[i]);
+    }
+
+    int courseCount = 0;
+    float cg = 0;
+    for (int i = 0; i < totalCourses; i++) {
+        if (gpa[i] == 0)
+            continue;
+        
+        courseCount++;
+        cg += gpa[i];
+    }
+    cg = cg / courseCount;
+
+
     fp = fopen(filePath, "w");
 
     if (fp == NULL) {
@@ -112,24 +136,14 @@ void SaveStudentInfo(struct Student *std, int totalCourses)
 
     fprintf(fp, "Name : %s\t\t\tRoll : %d\n", std->name, std->roll);
 
-    for (int i = 0; i < totalCourses; i++) {
-        ClearInputBuffer();
-
-        printf("Course name : ");
-        scanf("%80[^\n]",courses[i].name);
-
-        printf("Number : ");
-        scanf("%f",&courses[i].number);
-        CalculateGPA(&courses[i]);
-    }
-
     fprintf(fp, "Course name\t\tNumber\t\tGrade letter\t\tGrade point\n");
 
     for (int i = 0; i < totalCourses; i++) {
-        fprintf(fp, "%s\t\t%f\t\t%s\t\t%.2f\n", courses[i].name,
+        fprintf(fp, "%s\t\t%.2f\t\t%s\t\t\t%.2f\n", courses[i].name,
         courses[i].number, courses[i].gl, courses[i].gp);
     }
-    
+    fprintf(fp, "CGPA : %.2f", cg);
+
     free(gpa);
     free(courses);
     fclose(fp);
