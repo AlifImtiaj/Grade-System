@@ -63,15 +63,22 @@ void TakeInformation(struct Student* std) {
     printf("Enter total course : ");
     scanf("%d",&totalCourses);
 
-
     SaveStudentInfo(std, totalCourses);
 
 }
 
 void SaveStudentInfo(struct Student *std, int totalCourses)
 {
-
     struct Course* courses = (struct Course*) malloc(sizeof(struct Course) * totalCourses);
+    if (courses == NULL) {
+        printf("Error allocating memory for course structure!!!\n");
+        return;
+    }
+    float* gpa = (float*)malloc(sizeof(float)*totalCourses);
+    if (gpa == NULL) {
+        printf("Error allocating memory for gpa!!!\n");
+        return;
+    }
 
     char str1[50];
     char filePath[200] = "data/";
@@ -83,14 +90,23 @@ void SaveStudentInfo(struct Student *std, int totalCourses)
 
     if (fp != NULL) {
         printf("Student information already exists. Please use overwrite fucntion to overwrite data!!!\n");
+
         fclose(fp);
+
         free(courses);
+        free(gpa);
+
         return;
     }
+
     fp = fopen(filePath, "w");
 
     if (fp == NULL) {
-        printf("Error while creating file!!!");
+        printf("Error while creating file!!!\n");
+
+        free(courses);
+        free(gpa);
+
         return;
     }
 
@@ -98,17 +114,23 @@ void SaveStudentInfo(struct Student *std, int totalCourses)
 
     for (int i = 0; i < totalCourses; i++) {
         ClearInputBuffer();
+
         printf("Course name : ");
         scanf("%80[^\n]",courses[i].name);
+
         printf("Number : ");
         scanf("%f",&courses[i].number);
+        CalculateGPA(&courses[i]);
     }
 
-    fprintf(fp, "Course name\t\t\t\tNumber\n");
+    fprintf(fp, "Course name\t\tNumber\t\tGrade letter\t\tGrade point\n");
+
     for (int i = 0; i < totalCourses; i++) {
-        fprintf(fp, "%s\t\t\t\t%f\n", courses[i].name, courses[i].number);
+        fprintf(fp, "%s\t\t%f\t\t%s\t\t%.2f\n", courses[i].name,
+        courses[i].number, courses[i].gl, courses[i].gp);
     }
-
+    
+    free(gpa);
     free(courses);
     fclose(fp);
 }
