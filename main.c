@@ -15,47 +15,72 @@ void CreateDir();
 
 int main() {
     CreateDir();
+
+    int choice;
+    int totalNumberOfStudent;
+    int roll;
+
+    printf("1. Add student information\n");
+    printf("2. Add marks for semester\n");
+    printf("3. Search student information\n");
+    printf("4. Exit\n");
+    do {
+        printf("Enter : ");
+        scanf("%d",&choice);
+        ClearInputBuffer();
+
+        switch (choice)
+        {
+        case 1:
+            printf("Total students : ");
+            scanf("%d",&totalNumberOfStudent);
+
+            struct Student* students = (struct Student*)malloc(sizeof(struct Student)*totalNumberOfStudent);
+
+            if (students == NULL) {
+                printf("Memory Allocation failed 101!!!\n");
+                return 1;
+            }
+
+            for (int i = 0; i < totalNumberOfStudent; i++) {
+                ClearInputBuffer();
+                AddStudentInformation(&students[i]);
+            }
+
+            free(students);
+
+            break;
+        case 2:
+            printf("Roll : ");
+            scanf("%d",&roll);
+
+            AddMark(roll);
+
+            break;
+        case 3:
+            printf("Roll : ");
+            scanf("%d",&roll);
+            SearchStudentInfo(roll);
+
+            break;
+        case 4:
+            printf("Exiting the program\n");
+            return 0;
+
+        default:
+            printf("Enter correct option!!!\n");
+            break;
+        }
+
+
+    } while(choice < 1 || choice > 4);
     
 
-    int totalNumberOfStudent;
-    printf("Total students : ");
-    scanf("%d",&totalNumberOfStudent);
+    // int roll;
+    // printf("Enter roll to search : ");
+    // scanf("%d",&roll);
 
-    struct Student* students = (struct Student*)malloc(sizeof(struct Student)*totalNumberOfStudent);
-
-
-    for(int i = 0; i < totalNumberOfStudent; i++) {
-        ClearInputBuffer(); // clears the input buffer
-        TakeInformation(&students[i]);
-        // SaveStudentInfo(&students[i]);
-    }
-
-
-    free(students);
-
-
-
-
-    // struct Student student[10];
-
-    // for (int i = 0; i < sizeof(student)/sizeof(student[0]); i++) {
-    //     student[i] = TakeInformation();
-    //     SaveStudentInfo(&student[i]);
-    //     fflush(stdin); // clears the input buffer
-    // }
-
-    // struct Course* courses = (struct Course*) malloc(sizeof(struct Course)*5);
-    // strcpy(courses[2].name, "Alif Imtiaj");
-
-    // printf("%s",courses[2].name);
-
-    // free(courses);
-
-    int roll;
-    printf("Enter roll to search : ");
-    scanf("%d",&roll);
-
-    SearchStudentInfo(roll);
+    // SearchStudentInfo(roll);
 
     return 0;
 

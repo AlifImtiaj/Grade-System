@@ -3,7 +3,121 @@
 #include <stdlib.h>
 #include <string.h>
 
-void ShowInformation(struct Student* std) {
+void AddStudentInformation(struct Student* std) {
+    FILE* fp;
+
+    printf("Name : ");
+    scanf("%256[^\n]",&std->name);
+    printf("Roll : ");
+    scanf("%d",&std->roll);
+
+    char str1[50];
+    char filePath[200] = "data/";
+    sprintf(str1, "%d",std->roll);
+    strcat(str1, ".txt");
+    strcat(filePath, str1);
+    fp = fopen(filePath, "r");
+
+    if (fp != NULL) {
+        printf("Student information already exists!!!\n");
+
+        fclose(fp);
+        return;
+    }
+
+
+    fp = fopen(filePath, "w");
+
+    if (fp == NULL) {
+        printf("Error while creating file!!!\n");
+        return;
+    }
+
+    fprintf(fp, "Name : %s\t\t\tRoll : %d\n", std->name, std->roll);
+
+}
+
+void AddMark(int roll) {
+    char sem[50];
+
+    char str1[50]; // to store roll in it
+    char filePath[200] = "data/";
+
+    sprintf(str1, "%d", roll);
+    strcat(str1, ".txt");
+    strcat(filePath, str1);
+
+    FILE* fp = fopen(filePath, "r");
+    if (fp == NULL) {
+        printf("Student information does not exists!!!\n");
+        return;
+    }
+    fclose(fp);
+
+    fp = fopen(filePath, "a");
+
+    ClearInputBuffer();
+
+    printf("Semester name : ");
+    scanf("%50[^\n]", sem);
+
+    fprintf(fp, "%s\n",sem);
+
+    int totalCourses;
+    printf("Enter total course : ");
+    scanf("%d",&totalCourses);
+    ClearInputBuffer();
+
+    struct Course* courses = (struct Course*) malloc(sizeof(struct Course) * totalCourses);
+    if (courses == NULL) {
+        printf("Memory Allocation Error 102!!!\n"); // 102 = courses memory allocation
+        return;
+    }
+    float* gp = (float*)malloc(sizeof(float)*totalCourses);
+    if (gp == NULL) {
+        printf("Memory Allocation Error 103!!!\n");
+        free(courses);
+        return;
+    }
+
+    for (int i = 0; i < totalCourses; i++) {
+        ClearInputBuffer();
+
+        printf("Course name : ");
+        scanf("%80[^\n]",courses[i].name);
+
+        printf("Number : ");
+        scanf("%f",&courses[i].number);
+        gp[i] = CalculateGPA(&courses[i]);
+    }
+
+    int courseCount = 0;
+    float cg = 0;
+    for (int i = 0; i < totalCourses; i++) {
+        if (gp[i] == 0)
+            continue;
+        
+        courseCount++;
+        cg += gp[i];
+    }
+    cg = cg / courseCount;
+
+    fprintf(fp, "Course name\t\tNumber\t\tGrade letter\t\tGrade point\n");
+
+    for (int i = 0; i < totalCourses; i++) {
+        fprintf(fp, "%s\t\t%.2f\t\t%s\t\t\t%.2f\n", courses[i].name,
+        courses[i].number, courses[i].gl, courses[i].gp);
+    }
+    fprintf(fp, "CGPA : %.2f", cg);
+
+    free(gp);
+    free(courses);
+    fclose(fp);
+
+}
+
+void ShowInformation(struct Student *std)
+{
     printf("\nName : %s", std->name);
     printf("\nRoll : %d", std->roll);
 }
@@ -51,22 +165,7 @@ float CalculateGPA(struct Course* crs) {
 
 }
 
-void TakeInformation(struct Student* std) {
 
-    printf("\nEnter name : ");
-    scanf("%256[^\n]", std->name); // take input until new line (Enter) is pressed
-
-    printf("\nEnter roll : ");
-    scanf("%d", &std->roll);
-
-
-    int totalCourses;
-    printf("Enter total course : ");
-    scanf("%d",&totalCourses);
-
-    SaveStudentInfo(std, totalCourses);
-
-}
 
 void SaveStudentInfo(struct Student *std, int totalCourses)
 {
@@ -90,7 +189,7 @@ void SaveStudentInfo(struct Student *std, int totalCourses)
     FILE* fp = fopen(filePath, "r");
 
     if (fp != NULL) {
-        printf("Student information already exists. Please use overwrite fucntion to overwrite data!!!\n");
+        printf("Student information already exists!!!\n");
 
         fclose(fp);
 

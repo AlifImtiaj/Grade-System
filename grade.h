@@ -13,8 +13,10 @@ struct Course {
     char gl[3]; // grade letter
 };
 
+void AddStudentInformation(struct Student* std);
+void AddMark(int roll);
+
 void ShowInformation(struct Student* std);
-void TakeInformation(struct Student* std);
 void SaveStudentInfo(struct Student* std, int totalCourses);
 void SearchStudentInfo(int roll);
 
