@@ -5,6 +5,7 @@ struct Student {
     int roll;
 };
 
+
 struct Course {
     char name[80];
     float number;
