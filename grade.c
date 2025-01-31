@@ -66,7 +66,6 @@ void AddMark(int roll) {
     int totalCourses;
     printf("Enter total course : ");
     scanf("%d",&totalCourses);
-    ClearInputBuffer();
 
     struct Course* courses = (struct Course*) malloc(sizeof(struct Course) * totalCourses);
     if (courses == NULL) {
@@ -108,7 +107,7 @@ void AddMark(int roll) {
         fprintf(fp, "%s\t\t%.2f\t\t%s\t\t\t%.2f\n", courses[i].name,
         courses[i].number, courses[i].gl, courses[i].gp);
     }
-    fprintf(fp, "CGPA : %.2f", cg);
+    fprintf(fp, "CGPA : %.2f\n", cg);
 
     free(gp);
     free(courses);
@@ -166,7 +165,7 @@ float CalculateGPA(struct Course* crs) {
 }
 
 
-
+// un-used
 void SaveStudentInfo(struct Student *std, int totalCourses)
 {
     struct Course* courses = (struct Course*) malloc(sizeof(struct Course) * totalCourses);
@@ -241,7 +240,7 @@ void SaveStudentInfo(struct Student *std, int totalCourses)
         fprintf(fp, "%s\t\t%.2f\t\t%s\t\t\t%.2f\n", courses[i].name,
         courses[i].number, courses[i].gl, courses[i].gp);
     }
-    fprintf(fp, "CGPA : %.2f", cg);
+    fprintf(fp, "CGPA : %.2f\n", cg);
 
     free(gpa);
     free(courses);
